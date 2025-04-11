@@ -1,0 +1,11 @@
+{
+  "colorize.include": [
+    "**/*.css",
+    "**/*.scss",
+    "**/*.sass",
+    "**/*.less",
+    "**/*.styl",
+    "**/*.mjs",
+    "**/*.tsx"
+  ]
+}
