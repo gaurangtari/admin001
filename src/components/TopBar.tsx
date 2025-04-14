@@ -3,6 +3,7 @@ import React, { FC, useState, useEffect } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import Image from "next/image";
 import nio_logo from "../../public/images/nio-logo-light.jpeg";
+import jigyasa_logo from "../../public/images/jigyasa.png";
 
 // Helper to format time as HH:MM
 function getFormattedTime(): string {
@@ -70,6 +71,7 @@ const TopBar: FC = () => {
     <div className="m-2 rounded-lg bg-zinc-800 px-4 py-2 flex items-center justify-between">
       <div className="flex items-center space-x-2">
         <Image src={nio_logo} alt="Logo" width={50} height={50} />
+        <Image src={jigyasa_logo} alt="Logo" width={75} height={75} />
         <span className="text-xl font-bold"></span>
       </div>
       {/* Hamburger for mobile */}

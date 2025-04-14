@@ -15,25 +15,32 @@ const SystemStatus: FC<SystemStatusProps> = ({
   orientation,
 }) => {
   const statusItems = [
-    { icon: <FaTachometerAlt />, label: "Speed", value: `${speed}` },
-    { icon: <FaArrowUp />, label: "Altitude", value: `${altitude}` },
-    { icon: <FaWater />, label: "Depth", value: `${depth}` },
+    {
+      icon: <FaTachometerAlt />,
+      label: "Speed",
+      value: `${speed} m/s`,
+    },
+    { icon: <FaArrowUp />, label: "Altitude", value: `${altitude}m` },
+    { icon: <FaWater />, label: "Depth", value: `${depth}m` },
     { icon: <FaCompass />, label: "Orientation", value: `${orientation}°` },
   ];
 
   return (
-    <div className="space-y-2">
-      <div className="font-semibold">System Status</div>
-      <div className="grid grid-cols-2 gap-2">
+    <div className="space-y-2 ">
+      <div className="grid gap-2 ">
         {statusItems.map(({ icon, label, value }) => (
           <div
             key={label}
-            className="flex items-center bg-zinc-700 p-2 rounded-lg"
+            className="flex items-center bg-zinc-800/75 bg-opacity-50 p-2 h-20 w-30 rounded-xl"
           >
             <div className="text-white mr-2">{icon}</div>
             <div className="flex flex-col text-sm">
-              <span className="text-gray-300">{label}</span>
-              <span className="font-medium">{value}</span>
+              <span className="text-gray-200">{label}</span>
+              {value !== "undefined" ? (
+                <span className="font-medium text-xl"> {value}</span>
+              ) : (
+                <span className="font-medium">...</span>
+              )}
             </div>
           </div>
         ))}
