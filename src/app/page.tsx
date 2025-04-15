@@ -4,6 +4,8 @@ import TopBar from "../components/TopBar";
 import VideoFeed from "../components/VideoFeed";
 import StatsPanel from "../components/StatsPanel";
 import ControlsPanel from "../components/ControlPanel";
+import LogoPanel from "@/components/LogoPanel";
+import CallNotification from "@/components/CallNotification";
 
 const Home: NextPage = () => (
   <>
@@ -17,7 +19,11 @@ const Home: NextPage = () => (
         <div className=" px-2 space-y-4">
           <VideoFeed />
         </div>
-        <StatsPanel />
+        <div className="flex flex-col space-y-2">
+          <StatsPanel />
+          <LogoPanel />
+          <CallNotification />
+        </div>
       </div>
     </div>
   </>

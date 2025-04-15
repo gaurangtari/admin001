@@ -1,18 +1,12 @@
-import React, { FC, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { LuExpand } from "react-icons/lu";
-import { BiCollapse } from "react-icons/bi";
-
+// components/MiniMap.tsx
+import React, { FC, useState, useEffect, useRef } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
+import { FiTarget } from "react-icons/fi";
+import { LuExpand } from "react-icons/lu";
+import { BiCollapse, BiTargetLock } from "react-icons/bi";
 
-// Fix default icon URLs (required for proper marker display)
 import "leaflet/dist/leaflet.css";
-
-interface MiniMapProps {
-  latitude: number;
-  longitude: number;
-  zoom?: number;
-}
 
 const rovIcon = new L.Icon({
   iconUrl: "images/bluerov_vector.png",
@@ -23,33 +17,88 @@ const rovIcon = new L.Icon({
   shadowSize: undefined,
   shadowAnchor: undefined,
 });
+
+interface MiniMapProps {
+  latitude: number;
+  longitude: number;
+  zoom?: number;
+}
+
+const RecenterControl: FC<{ lat: number; lng: number; trigger: boolean }> = ({
+  lat,
+  lng,
+  trigger,
+}) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (trigger) {
+      map.setView([lat, lng], map.getZoom());
+    }
+  }, [trigger, lat, lng, map]);
+
+  return null;
+};
+
 const MiniMap: FC<MiniMapProps> = ({ latitude, longitude, zoom = 20 }) => {
   const [expanded, setExpanded] = useState(false);
+  const [recenterTrigger, setRecenterTrigger] = useState(false);
+
+  const handleRecenter = () => {
+    setRecenterTrigger(false);
+    requestAnimationFrame(() => setRecenterTrigger(true));
+  };
+
+  useEffect(() => {
+    if (!expanded) {
+      handleRecenter();
+    }
+  }, [expanded]);
+
   return (
     <div
-      className={`relative rounded transition-all duration-300 overflow-hidden ${
-        expanded ? "h-100 w-100" : "h-40 w-60"
-      }`}
+      className={`
+        relative rounded overflow-hidden transition-all duration-300
+        ${expanded ? "h-100 w-100" : "h-40 w-60"} 
+      `}
     >
-      {/* Expand/Collapse Button */}
-      <button
-        onClick={() => setExpanded((prev) => !prev)}
-        className="absolute top-2 right-2 z-50 bg-white text-black px-2 py-1 text-xs rounded shadow hover:bg-gray-200"
-      >
-        {expanded ? <BiCollapse /> : <LuExpand />}
-      </button>
+      {/* Controls */}
+      <div className="absolute top-2 right-2 z-50 flex space-x-1">
+        <button
+          onClick={() => setExpanded((prev) => !prev)}
+          className="bg-gray-700 text-white p-1 rounded hover:bg-gray-300 hover:text-gray-700"
+          title={expanded ? "Collapse map" : "Expand map"}
+        >
+          {expanded ? <BiCollapse size={16} /> : <LuExpand size={16} />}
+        </button>
+        <button
+          onClick={handleRecenter}
+          className="bg-gray-700 text-white p-1 rounded hover:bg-gray-300 hover:text-gray-700"
+          title="Center on ROV"
+        >
+          <BiTargetLock size={19} />
+        </button>
+      </div>
 
       <MapContainer
         center={[latitude, longitude]}
         zoom={zoom}
         scrollWheelZoom={true}
         zoomControl={false}
-        className="w-full h-full z-0"
+        className={`
+          z-0
+          h-full w-full
+        `}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <Marker position={[latitude, longitude]} icon={rovIcon}>
           <Popup>BlueROV</Popup>
         </Marker>
+        <RecenterControl
+          lat={latitude}
+          lng={longitude}
+          trigger={recenterTrigger}
+        />
       </MapContainer>
     </div>
   );
