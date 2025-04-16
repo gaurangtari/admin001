@@ -87,7 +87,7 @@ const TopBar: FC = () => {
   }, []);
 
   return (
-    <div className="m-2 rounded-lg bg-zinc-800 px-4 py-2 flex items-center justify-between">
+    <div className="m-2 h-10 rounded-lg bg-zinc-800 px-4 py-2 flex items-center justify-between">
       <div className="flex items-center space-x-2">
         <Image
           src="/images/nio-logo-light.png"

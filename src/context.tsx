@@ -96,32 +96,34 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
     return () => window.removeEventListener("beforeunload", unloadCallback);
   }, []);
 
-  // //Connect to ROS topics
-  // useEffect(()=>{
-  //   const ros = new ROSLIB.Ros({
-  //     url: "ws://0.0.0.0:9090"
-  //   })
+  //Connect to ROS topics
+  useEffect(() => {
+    const ros = new ROSLIB.Ros({
+      url: "ws://0.0.0.0:9090",
+    });
 
-  //   ros.on("connection", ()=>{
-  //     console.log("Connected to ROS")
-  //   })
-  //   ros.on("error", (error: any) =>{
-  //     console.log("ROS connection error: ", error)
-  //   })
-  //   ros.on("close", ()=> console.log("disconnected from ROS"))
+    ros.on("connection", () => console.log("Connected to ROS"));
+    ros.on("error", (error: any) =>
+      console.error("ROS Connection Error:", error)
+    );
+    ros.on("close", () => console.log("Disconnected from ROS"));
 
-  //   const stateTopic = new ROSLIB.Topic({
-  //     ros: ros,
-  //     name: "/bluerov_heavy0/nav/filter/state",
-  //     messageType: "auv_msgs/NavigationStatus",
+    const stateTopic = new ROSLIB.Topic({
+      ros: ros,
+      name: "/bluerov_heavy0/nav/filter/state",
+      messageType: "auv_msgs/NavigationStatus",
+    });
 
-  //   })
+    stateTopic.subscribe((message: BlueROVState) => {
+      console.log("Received State:", message.orientation);
+      setRovState(message);
+    });
 
-  //   stateTopic.subscribe((message: BlueROVState)=>{
-  //     setRovState(message)
-  //   })
-
-  // })
+    return () => {
+      stateTopic.unsubscribe();
+      ros.close();
+    };
+  }, []);
 
   // Answer call functionality
   const answerCall = () => {
@@ -204,6 +206,7 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
         userVideo,
         stream,
         name,
+        rovState,
         setName,
         callEnded,
         me,

@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { FiPhoneCall, FiCheck, FiX } from "react-icons/fi";
 
 interface CallNotificationProps {
-  callerName: string;
+  callerName?: string;
   onAccept: () => void;
   onDecline: () => void;
 }
@@ -17,7 +17,8 @@ const CallNotification: FC<CallNotificationProps> = ({
   <div className="bg-white rounded-lg p-4 mx-2 w-75 h-30 flex items-start space-y-3">
     <div className="flex-1">
       <div className="font-semibold text-gray-800 text-lg">
-        {callerName} Placeholder <span className="text-sm"> is calling…</span>
+        {callerName}
+        <span className="text-sm"> is calling…</span>
       </div>
       <div className="mt-3 flex justify-centre space-x-2">
         <button

@@ -5,18 +5,37 @@ import React, { FC, useContext } from "react";
 import SystemStatus from "./SystemStatus";
 import MiniMap from "./MiniMap";
 
-const VideoFeed: FC = () => {
-  const { myVideo, stream, call } = useContext(
-    SocketContext
-  ) as SocketContextProps;
+interface VehicleStateProps {
+  speed: number;
+  altitude: number;
+  depth: number;
+  orientation: number;
+  latitude: number;
+  longitude: number;
+}
+
+const VideoFeed: FC<VehicleStateProps> = ({
+  speed,
+  altitude,
+  depth,
+  orientation,
+  latitude,
+  longitude,
+}) => {
+  const { myVideo } = useContext(SocketContext) as SocketContextProps;
   return (
     <div className="relative bg-zinc-800 rounded-lg overflow-hidden">
       <video playsInline muted ref={myVideo} autoPlay />
       <div className="absolute bottom-2 right-2  bg-opacity-50 p-1 rounded">
-        <SystemStatus speed={1} altitude={10} depth={5} orientation={324} />
+        <SystemStatus
+          speed={speed}
+          altitude={altitude}
+          depth={depth}
+          orientation={orientation}
+        />
       </div>
       <div className="absolute bottom-2 left-2">
-        <MiniMap latitude={15.456726} longitude={73.803051} />
+        <MiniMap latitude={latitude} longitude={longitude} />
       </div>
     </div>
   );
