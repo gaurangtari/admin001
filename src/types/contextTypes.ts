@@ -27,3 +27,15 @@ export interface SocketContextProps {
   answerCall: () => void;
   vehicleState: Record<string, any>;
 }
+
+export interface BlueROVState {
+  header?: {
+    seq: number;
+    stamp: { secs: number; nsecs: number };
+    frame_id: string;
+  };
+  body_velocity?: { x: number; y: number; z: number };
+  position?: { north: number; east: number; depth: number };
+  orientation?: { x: number; y: number; z: number; w: number };
+  velocity?: { x: number; y: number; z: number };
+}

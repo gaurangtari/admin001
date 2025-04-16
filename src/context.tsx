@@ -10,11 +10,13 @@ import Peer, { SignalData, Instance } from "simple-peer";
 import { ref, set } from "firebase/database";
 import { rtdb } from "./firebase";
 import {
+  BlueROVState,
   CallState,
   ConnectionStatus,
   SocketContextProps,
 } from "./types/contextTypes";
 import { socket } from "./socket";
+import ROSLIB from "roslib";
 
 const SocketContext = createContext<SocketContextProps>(
   {} as SocketContextProps
@@ -45,6 +47,8 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
   const userVideo = useRef<HTMLVideoElement>(null);
   const connectionRef = useRef<Instance>();
 
+  const [rovState, setRovState] = useState<BlueROVState | null>(null);
+  // Get media stream and connect to the socket
   useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: false })
@@ -53,27 +57,25 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
         if (myVideo.current) myVideo.current.srcObject = currentStream;
       });
 
-    // Register the "me" event listener before connecting
     socket.on("me", (id: string) => {
       console.log("my admin id is:", id);
       set(adminIdRef, id);
       setMe(id);
     });
 
-    // Register other listeners if needed
     socket.on("callUser", ({ from, name: callerName, signal }: CallState) => {
       setCall({ isReceivingCall: true, from, name: callerName, signal });
     });
 
-    // Now connect the socket
     socket.connect();
   }, []);
 
-  // Other useEffect hooks and functions remain unchanged...
+  //Send connction status to firebase
   useEffect(() => {
     set(connectionStatusRef, connectionStatus);
   }, [connectionStatus]);
 
+  //Send heartbeat to firebase
   useEffect(() => {
     const interval = setInterval(() => {
       const heartbeat = Date.now();
@@ -93,6 +95,33 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
     window.addEventListener("beforeunload", unloadCallback);
     return () => window.removeEventListener("beforeunload", unloadCallback);
   }, []);
+
+  // //Connect to ROS topics
+  // useEffect(()=>{
+  //   const ros = new ROSLIB.Ros({
+  //     url: "ws://0.0.0.0:9090"
+  //   })
+
+  //   ros.on("connection", ()=>{
+  //     console.log("Connected to ROS")
+  //   })
+  //   ros.on("error", (error: any) =>{
+  //     console.log("ROS connection error: ", error)
+  //   })
+  //   ros.on("close", ()=> console.log("disconnected from ROS"))
+
+  //   const stateTopic = new ROSLIB.Topic({
+  //     ros: ros,
+  //     name: "/bluerov_heavy0/nav/filter/state",
+  //     messageType: "auv_msgs/NavigationStatus",
+
+  //   })
+
+  //   stateTopic.subscribe((message: BlueROVState)=>{
+  //     setRovState(message)
+  //   })
+
+  // })
 
   // Answer call functionality
   const answerCall = () => {
