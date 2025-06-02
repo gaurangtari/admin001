@@ -1,0 +1,6 @@
+[client]
+remote_addr = "https://2333-cs-674539578021-default.cs-asia-southeast1-bool.cloudshell.dev/?authuser=0"
+default_token = "use_a_secret_that_only_you_know"
+
+[client.services.shell]
+local_addr = "127.0.0.1:8080"

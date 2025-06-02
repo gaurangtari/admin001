@@ -13,7 +13,7 @@ import { ConnectionStatus } from "@/types/contextTypes";
 import { rtdb } from "@/firebase";
 
 const Home: NextPage = () => {
-  const { call, stream, answerCall, rovState } = useContext(SocketContext);
+  const { call, answerCall, rovState, declineCall } = useContext(SocketContext);
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>({
     connectedUser: "",
     status: false,
@@ -27,6 +27,11 @@ const Home: NextPage = () => {
     });
     return () => off(connectionStatusRef);
   }, []);
+
+  const handleCallDecline = () => {
+    declineCall(call.from);
+    console.log("the call was from", call.from);
+  };
 
   return (
     <>
@@ -54,7 +59,7 @@ const Home: NextPage = () => {
               <CallNotification
                 callerName={call.name}
                 onAccept={answerCall}
-                onDecline={() => console.log("call declined")}
+                onDecline={handleCallDecline}
               />
             )}
           </div>

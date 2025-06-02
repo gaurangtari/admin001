@@ -48,6 +48,7 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
   const connectionRef = useRef<Instance>();
 
   const [rovState, setRovState] = useState<BlueROVState | null>(null);
+
   // Get media stream and connect to the socket
   useEffect(() => {
     navigator.mediaDevices
@@ -64,11 +65,23 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
     });
 
     socket.on("callUser", ({ from, name: callerName, signal }: CallState) => {
-      setCall({ isReceivingCall: true, from, name: callerName, signal });
+      if (signal.sdp.includes("m=video")) {
+        setCall({ isReceivingCall: false, from, name: callerName, signal });
+      } else {
+        setCall({ isReceivingCall: true, from, name: callerName, signal });
+        console.log("call", call);
+      }
     });
 
     socket.connect();
   }, []);
+
+  // Auto answer when the full offer comes
+  useEffect(() => {
+    if (call.signal?.sdp.includes("m=video")) {
+      answerCall();
+    }
+  }, [call]);
 
   //Send connction status to firebase
   useEffect(() => {
@@ -99,7 +112,7 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
   //Connect to ROS topics
   useEffect(() => {
     const ros = new ROSLIB.Ros({
-      url: "ws://0.0.0.0:9090",
+      url: "ws://172.27.101.71:9090",
     });
 
     ros.on("connection", () => console.log("Connected to ROS"));
@@ -125,7 +138,14 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
     };
   }, []);
 
-  // Answer call functionality
+  //***************************************************** ANSWER CALL *********************************************************************** */
+
+  const declineCall = (from: string) => {
+    setCallAccepted(false);
+    setCall({ isReceivingCall: false });
+    socket.emit("callDeline", true, from);
+  };
+
   const answerCall = () => {
     setCallAccepted(true);
     setCall({ isReceivingCall: false });
@@ -135,6 +155,8 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
       trickle: false,
       stream,
     });
+
+    console.log("call details inside answercall function", call);
 
     peer.on("signal", (data: SignalData) => {
       socket.emit("answerCall", { signal: data, to: call.from });
@@ -213,6 +235,7 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
         callUser,
         leaveCall,
         answerCall,
+        declineCall,
         vehicleState,
       }}
     >

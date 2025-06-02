@@ -25,6 +25,7 @@ export interface SocketContextProps {
   callUser: (id: string) => void;
   leaveCall: () => void;
   answerCall: () => void;
+  declineCall: (from?: string) => void;
   vehicleState: Record<string, any>;
 }
 
