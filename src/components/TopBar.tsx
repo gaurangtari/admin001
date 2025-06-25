@@ -40,7 +40,6 @@ const TopBar: FC = () => {
         `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`
       );
       const data = await res.json();
-      console.log(data);
       const name =
         data.locality || data.principalSubdivision || data.city || "Unknown";
       setLocationName(name);
@@ -87,15 +86,15 @@ const TopBar: FC = () => {
   }, []);
 
   return (
-    <div className="m-2 h-10 rounded-lg bg-zinc-800 px-4 py-2 flex items-center justify-between">
+    <div className="relative m-2 h-10 rounded-lg bg-zinc-800 px-4 py-2 flex items-center justify-between">
       <div className="flex items-center space-x-2">
         <Image
           src="/images/nio-logo-light.png"
           alt="Logo"
-          width={50}
-          height={50}
+          width={40}
+          height={40}
         />
-        <span>CSIR-NIO</span>
+        <span className="font-semibold">CSIR-NIO</span>
       </div>
 
       {/* Mobile hamburger */}
@@ -107,20 +106,32 @@ const TopBar: FC = () => {
         {open ? <FiX size={24} /> : <FiMenu size={24} />}
       </button>
 
-      {/* Menu items */}
-      <div
-        className={`flex-col lg:flex-row lg:flex lg:items-center w-full lg:w-auto ${
-          open ? "flex" : "hidden"
-        }`}
-      >
-        <div className="flex items-center space-x-4 px-2 py-1 text-white">
-          <div>
-            {temperature !== null ? `${Math.round(temperature)}°C` : "...°C"}
-          </div>
-          <div>{locationName}</div>
-          <div>{currentTime}</div>
-        </div>
+      {/* Desktop items */}
+      <div className="hidden lg:flex lg:items-center space-x-6 text-white">
+        <div>{temperature !== null ? `${Math.round(temperature)}°C` : "...°C"}</div>
+        <div>{locationName}</div>
+        <div>{currentTime}</div>
       </div>
+
+      {/* Mobile dropdown */}
+      {open && (
+        <div className="absolute top-full left-0 w-full bg-zinc-800 shadow-lg rounded-b-lg mt-1 overflow-hidden">
+          <div className="flex flex-col p-4 space-y-2 text-white">
+            <div className="flex justify-between">
+              <span>Temp:</span>
+              <span>{temperature !== null ? `${Math.round(temperature)}°C` : "...°C"}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Location:</span>
+              <span>{locationName}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Time:</span>
+              <span>{currentTime}</span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

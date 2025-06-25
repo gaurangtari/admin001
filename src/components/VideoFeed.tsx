@@ -5,7 +5,7 @@ import React, { FC, useContext } from "react";
 import SystemStatus from "./SystemStatus";
 import MiniMap from "./MiniMap";
 
-interface VehicleStateProps {
+interface VideoFeedProps {
   speed: number;
   altitude: number;
   depth: number;
@@ -14,7 +14,7 @@ interface VehicleStateProps {
   longitude: number;
 }
 
-const VideoFeed: FC<VehicleStateProps> = ({
+const VideoFeed: FC<VideoFeedProps> = ({
   speed,
   altitude,
   depth,
@@ -23,10 +23,19 @@ const VideoFeed: FC<VehicleStateProps> = ({
   longitude,
 }) => {
   const { myVideo } = useContext(SocketContext) as SocketContextProps;
+
   return (
-    <div className="relative bg-zinc-800 rounded-lg overflow-hidden">
-      <video playsInline muted ref={myVideo} autoPlay />
-      <div className="absolute bottom-2 right-2  bg-opacity-50 p-1 rounded">
+    <div className="relative h-screen w-full bg-zinc-800 rounded-lg overflow-hidden">
+      <video
+        playsInline
+        muted
+        ref={myVideo}
+        autoPlay
+        className="h-full w-full"
+      />
+
+      {/* overlay status */}
+      <div className="absolute bottom-2 right-2">
         <SystemStatus
           speed={speed}
           altitude={altitude}
@@ -34,6 +43,8 @@ const VideoFeed: FC<VehicleStateProps> = ({
           orientation={orientation}
         />
       </div>
+
+      {/* overlay minimap */}
       <div className="absolute bottom-2 left-2">
         <MiniMap latitude={latitude} longitude={longitude} />
       </div>

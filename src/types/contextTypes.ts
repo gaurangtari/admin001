@@ -40,3 +40,19 @@ export interface BlueROVState {
   orientation?: { x: number; y: number; z: number; w: number };
   velocity?: { x: number; y: number; z: number };
 }
+
+export interface DVLState {
+      range: number;
+    range_covariance: number;
+    velocity: number;
+    velocity_covariance: number
+    header?: {
+      seq: number;
+      stamp: {secs: number; nsecs: number}
+      frame_id: string
+    }
+
+    position?: {
+      x: number; y: number; z:number
+    }
+   }

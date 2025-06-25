@@ -30,7 +30,6 @@ const Home: NextPage = () => {
 
   const handleCallDecline = () => {
     declineCall(call.from);
-    console.log("the call was from", call.from);
   };
 
   return (
