@@ -14,7 +14,7 @@ import {
   CallState,
   ConnectionStatus,
   SocketContextProps,
-  DVLState
+  DVLState,
 } from "./types/contextTypes";
 import { socket } from "./socket";
 import ROSLIB from "roslib";
@@ -131,19 +131,20 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
     const dvlTopic = new ROSLIB.Topic({
       ros: ros,
       name: "/bluerov_heavy0/dvl",
-      messageType: "uuv_sensor_ros_plugins_msgs/DVL"
-    })
-
-    stateTopic.subscribe((message: BlueROVState) => {
-      // console.log("Received State:", message.orientation);
-      setRovState(message);
+      messageType: "uuv_sensor_ros_plugins_msgs/DVL",
     });
 
-    dvlTopic.subscribe((message: DVLState ) =>{ 
-      console.log("Altitude of the ROV is: ", message.altitude
-        
-      )
-    })
+    stateTopic.subscribe((message) => {
+      // console.log(message);
+      setRovState({
+        altitude: message.altitude,
+        orientation: message.orientation.z,
+        speed: message.body_velocity.x,
+        depth: message.position.depth,
+        latitude: message.global_position.latitude,
+        longitude: message.global_position.longitude,
+      });
+    });
 
     return () => {
       stateTopic.unsubscribe();

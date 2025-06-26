@@ -3,7 +3,8 @@ import { SocketContext } from "@/context";
 import { SocketContextProps } from "@/types/contextTypes";
 import React, { FC, useContext } from "react";
 import SystemStatus from "./SystemStatus";
-import MiniMap from "./MiniMap";
+import dynamic from "next/dynamic";
+const MiniMap = dynamic(() => import("./MiniMap"), { ssr: false });
 
 interface VideoFeedProps {
   speed: number;
@@ -25,7 +26,7 @@ const VideoFeed: FC<VideoFeedProps> = ({
   const { myVideo } = useContext(SocketContext) as SocketContextProps;
 
   return (
-    <div className="relative h-screen w-full bg-zinc-800 rounded-lg overflow-hidden">
+    <div className="relative h-full w-full bg-zinc-800 rounded-lg overflow-hidden">
       <video
         playsInline
         muted

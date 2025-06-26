@@ -3,10 +3,10 @@ import { FaTachometerAlt, FaArrowUp, FaWater, FaCompass } from "react-icons/fa";
 import Compass from "./Compass";
 
 interface SystemStatusProps {
-  speed: number; // in m/s or km/h
-  altitude: number; // in meters
-  depth: number; // in meters
-  orientation: number; // in degrees (0-360)
+  speed: number;
+  altitude: number;
+  depth: number;
+  orientation: number;
 }
 
 const SystemStatus: FC<SystemStatusProps> = ({

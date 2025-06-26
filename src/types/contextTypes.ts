@@ -30,29 +30,28 @@ export interface SocketContextProps {
 }
 
 export interface BlueROVState {
+  altitude: number;
+  orientation: number;
+  speed: number;
+  depth: number;
+  latitude: number;
+  longitude: number;
+}
+
+export interface DVLState {
+  range: number;
+  range_covariance: number;
+  velocity: number;
+  velocity_covariance: number;
   header?: {
     seq: number;
     stamp: { secs: number; nsecs: number };
     frame_id: string;
   };
-  body_velocity?: { x: number; y: number; z: number };
-  position?: { north: number; east: number; depth: number };
-  orientation?: { x: number; y: number; z: number; w: number };
-  velocity?: { x: number; y: number; z: number };
+
+  position?: {
+    x: number;
+    y: number;
+    z: number;
+  };
 }
-
-export interface DVLState {
-      range: number;
-    range_covariance: number;
-    velocity: number;
-    velocity_covariance: number
-    header?: {
-      seq: number;
-      stamp: {secs: number; nsecs: number}
-      frame_id: string
-    }
-
-    position?: {
-      x: number; y: number; z:number
-    }
-   }

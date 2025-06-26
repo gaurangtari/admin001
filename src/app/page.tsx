@@ -43,12 +43,12 @@ const Home: NextPage = () => {
         <div className="flex justify-between flex-1">
           <div className=" px-2 space-y-4">
             <VideoFeed
-              speed={rovState?.body_velocity?.x.toFixed(2)}
-              depth={rovState?.position?.depth.toFixed(2)}
-              orientation={rovState?.orientation?.z.toFixed(2)}
-              altitude={1}
-              latitude={15.456726}
-              longitude={73.803051}
+              speed={rovState?.speed.toFixed(2)}
+              depth={rovState?.depth.toFixed(2)}
+              orientation={rovState?.orientation?.toFixed(2)}
+              altitude={rovState?.altitude.toFixed(2)}
+              latitude={rovState?.latitude}
+              longitude={rovState?.longitude}
             />
           </div>
           <div className="flex flex-col space-y-2">
