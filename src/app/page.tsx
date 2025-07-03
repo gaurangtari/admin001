@@ -5,7 +5,7 @@ import TopBar from "../components/TopBar";
 import VideoFeed from "../components/VideoFeed";
 import LogoPanel from "@/components/LogoPanel";
 import CallNotification from "@/components/CallNotification";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { SocketContext } from "@/context";
 import ConnectedUser from "../components/ConnectedUser";
 import { ref, set, onValue, off } from "firebase/database";
@@ -31,6 +31,42 @@ const Home: NextPage = () => {
   const handleCallDecline = () => {
     declineCall(call.from);
   };
+
+  const alertAudioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    if (!alertAudioRef.current) {
+      const audio = new Audio("/call_tune.mp3");
+      audio.volume = 1;
+      audio.loop = true;
+      alertAudioRef.current = audio;
+    }
+  }, []);
+
+  useEffect(() => {
+    const unlock = () => {
+      const a = alertAudioRef.current!;
+      a.play()
+        .then(() => {
+          a.pause();
+          a.currentTime = 0;
+        })
+        .catch(() => {});
+      window.removeEventListener("click", unlock);
+    };
+    window.addEventListener("click", unlock, { once: true });
+    return () => window.removeEventListener("click", unlock);
+  }, []);
+
+  useEffect(() => {
+    const audio = alertAudioRef.current!;
+    if (call.isReceivingCall) {
+      audio.play().catch((err) => console.warn("Play blocked:", err));
+    } else {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+  }, [call.isReceivingCall]);
 
   return (
     <>

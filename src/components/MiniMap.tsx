@@ -1,8 +1,7 @@
 "use client";
-import React, { FC, useState, useEffect, useRef } from "react";
+import React, { FC, useState, useRef, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
-import { FiTarget } from "react-icons/fi";
 import { LuExpand } from "react-icons/lu";
 import { BiCollapse, BiTargetLock } from "react-icons/bi";
 
@@ -43,6 +42,14 @@ const RecenterControl: FC<{ lat: number; lng: number; trigger: boolean }> = ({
 const MiniMap: FC<MiniMapProps> = ({ latitude, longitude, zoom = 20 }) => {
   const [expanded, setExpanded] = useState(false);
   const [recenterTrigger, setRecenterTrigger] = useState(false);
+
+  if (latitude == null || longitude == null) {
+    return (
+      <div className="flex items-center justify-center h-40 w-60 bg-zinc-800 text-white">
+        Loading map…
+      </div>
+    );
+  }
 
   const handleRecenter = () => {
     setRecenterTrigger(false);

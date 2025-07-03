@@ -13,7 +13,7 @@ function getFormattedTime(): string {
 
 const TopBar: FC = () => {
   const [open, setOpen] = useState(false);
-  const [currentTime, setCurrentTime] = useState(getFormattedTime());
+  const [currentTime, setCurrentTime] = useState<string | null>(null);
   const [temperature, setTemperature] = useState<number | null>(null);
   const [locationName, setLocationName] = useState<string>("…");
 
@@ -108,7 +108,9 @@ const TopBar: FC = () => {
 
       {/* Desktop items */}
       <div className="hidden lg:flex lg:items-center space-x-6 text-white">
-        <div>{temperature !== null ? `${Math.round(temperature)}°C` : "...°C"}</div>
+        <div>
+          {temperature !== null ? `${Math.round(temperature)}°C` : "...°C"}
+        </div>
         <div>{locationName}</div>
         <div>{currentTime}</div>
       </div>
@@ -119,7 +121,11 @@ const TopBar: FC = () => {
           <div className="flex flex-col p-4 space-y-2 text-white">
             <div className="flex justify-between">
               <span>Temp:</span>
-              <span>{temperature !== null ? `${Math.round(temperature)}°C` : "...°C"}</span>
+              <span>
+                {temperature !== null
+                  ? `${Math.round(temperature)}°C`
+                  : "...°C"}
+              </span>
             </div>
             <div className="flex justify-between">
               <span>Location:</span>
