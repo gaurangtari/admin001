@@ -27,5 +27,5 @@ NEXT_FIREBASE_MEASUREMENT_ID=G-JG*******
 NEXT_PUBLIC_SIGNALLING_SERVER_URL=https://nios****er.ga******.com:8080/
 ```
 
-This application is develped to receive data from the ROV and make conntion to the companion mobile application possible. This application should be run in the same machine where the ROV is connected.
+This application is develped to receive data from the ROV and make connection to the companion mobile application possible. This application should be run in the same machine where the ROV is connected.
 Once ROV is connected follow the instruction from the startup manual to ensure smooth operation of this application.
