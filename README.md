@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Install npm modules
 
-## Getting Started
+```bash
+npm install
+```
 
-First, run the development server:
+To run development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Example .env file
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+#FIREBASE
+NEXT_FIREBASE_API_KEY=AIzaSyC**************************
+NEXT_FIREBASE_AUTH_DOMAIN=nioblue.firebaseapp.com
+NEXT_FIREBASE_DATABASE_URL=https://nioblue-default-rtdb.firebaseio.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=nio******
+NEXT_FIREBASE_STORAGE_BUCKET=niob**.appspot.com
+NEXT_FIREBASE_MESSAGING_SENDER_ID=59******15606
+NEXT_FIREBASE_APP_ID=1:59*************e72ba13d35a1b7
+NEXT_FIREBASE_MEASUREMENT_ID=G-JG*******
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# SIGNALLING SERVER URL
+NEXT_PUBLIC_SIGNALLING_SERVER_URL=https://nios****er.ga******.com:8080/
+```
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This application is develped to receive data from the ROV and make conntion to the companion mobile application possible. This application should be run in the same machine where the ROV is connected.
+Once ROV is connected follow the instruction from the startup manual to ensure smooth operation of this application.

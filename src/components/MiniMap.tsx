@@ -43,14 +43,6 @@ const MiniMap: FC<MiniMapProps> = ({ latitude, longitude, zoom = 20 }) => {
   const [expanded, setExpanded] = useState(false);
   const [recenterTrigger, setRecenterTrigger] = useState(false);
 
-  if (latitude == null || longitude == null) {
-    return (
-      <div className="flex items-center justify-center h-40 w-60 bg-zinc-800 text-white">
-        Loading map…
-      </div>
-    );
-  }
-
   const handleRecenter = () => {
     setRecenterTrigger(false);
     requestAnimationFrame(() => setRecenterTrigger(true));
@@ -61,6 +53,14 @@ const MiniMap: FC<MiniMapProps> = ({ latitude, longitude, zoom = 20 }) => {
       handleRecenter();
     }
   }, [expanded]);
+
+  if (latitude == null || longitude == null) {
+    return (
+      <div className="flex items-center justify-center h-40 w-60 bg-zinc-800 text-white">
+        Loading map…
+      </div>
+    );
+  }
 
   return (
     <div

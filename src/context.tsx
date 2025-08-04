@@ -27,6 +27,17 @@ interface ContextProviderProps {
   children: ReactNode;
 }
 
+const ICE_SERVERS = [
+  {
+    urls: ["stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"],
+  },
+  {
+    urls: ["turn:turn.gaurangtari.com:3478", "turns:turn.gaurangtari.com:5349"],
+    username: "nioturnserver",
+    credential: "nio12345",
+  },
+];
+
 const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
   const [callAccepted, setCallAccepted] = useState(false);
   const [callEnded, setCallEnded] = useState(false);
@@ -167,6 +178,12 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
     const peer = new Peer({
       initiator: false,
       trickle: false,
+      config: {
+        iceServers: ICE_SERVERS,
+        iceTransportPolicy: "all",
+        rtcpMuxPolicy: "negotiate",
+        bundlePolicy: "max-bundle",
+      },
       stream,
     });
 
