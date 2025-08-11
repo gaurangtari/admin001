@@ -25,6 +25,14 @@ NEXT_FIREBASE_MEASUREMENT_ID=G-JG*******
 
 # SIGNALLING SERVER URL
 NEXT_PUBLIC_SIGNALLING_SERVER_URL=https://nios****er.ga******.com:8080/
+
+
+# MY TURN SERVER
+NEXT_PUBLIC_PRIVATE_TURN_SERVER_PORT_ONE=turn:turn.example.com:3478
+NEXT_PUBLIC_PRIVATE_TURN_SERVER_PORT_TWO=turns:turn.example.com:5349
+NEXT_PUBLIC_PRIVATE_TURN_SERVER_USERNAME=example_username
+NEXT_PUBLIC_PRIVATE_TURN_SERVER_CRED=example_password
+
 ```
 
 This application is develped to receive data from the ROV and make connection to the companion mobile application possible. This application should be run in the same machine where the ROV is connected.

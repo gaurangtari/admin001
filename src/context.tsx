@@ -32,9 +32,12 @@ const ICE_SERVERS = [
     urls: ["stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"],
   },
   {
-    urls: ["turn:turn.gaurangtari.com:3478", "turns:turn.gaurangtari.com:5349"],
-    username: "nioturnserver",
-    credential: "nio12345",
+    urls: [
+      process.env.NEXT_PUBLIC_PRIVATE_TURN_SERVER_PORT_ONE,
+      process.env.NEXT_PUBLIC_PRIVATE_TURN_SERVER_PORT_TWO,
+    ],
+    username: process.env.NEXT_PUBLIC_PRIVATE_TURN_SERVER_USERNAME,
+    credential: process.env.NEXT_PUBLIC_PRIVATE_TURN_SERVER_CRED,
   },
 ];
 
@@ -116,8 +119,6 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
       event.returnValue = "";
       return "";
     };
-
-    window.addEventListener("beforeunload", unloadCallback);
     return () => window.removeEventListener("beforeunload", unloadCallback);
   }, []);
 
